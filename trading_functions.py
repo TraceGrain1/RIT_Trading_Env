@@ -91,3 +91,18 @@ def get_orders(order_type):
         if response.ok:
             orders = response.json()
     return orders
+
+
+"""
+post_order()
+"""
+def post_order(ticker, order_type, quantity, side, price):
+    payload = {'ticker': ticker, 'type': order_type, 'quantity': quantity, 'action': side, 'price': price}
+    with requests.Session() as sess:
+        sess.headers.update(api_key)
+        response = sess.post(base_url + orders_ep, params = payload)
+        print(response)
+        if response.ok:
+            order_post_details = response.json()
+            print(order_post_details)
+    return order_post_details

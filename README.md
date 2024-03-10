@@ -27,7 +27,7 @@ Program Development for FIN 640 class.
 * Deactivate Environment
     * `conda deactivate`
 
-## Set Up - Repeat 
+## Set Up - Repeat Users
 * Open Anaconda Prompt
 * Activate Environment
     * `conda activate <ENV NAME>`
