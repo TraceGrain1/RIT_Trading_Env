@@ -123,3 +123,4 @@ class Securities:
         min_max_trade_size = [security_min_trade, security_max_trade]
         print("Min Trade Limit, Max Trade Limit")
         return min_max_trade_size
+

@@ -7,15 +7,16 @@ class OrderBook:
     def __init__(self, ticker, api_key):
         self.ticker = ticker
         self.api_key = api_key
-    
+
     """
     PARAMETERS:
 
-    RETURNS: securities
+    RETURNS: global_orders_df
 
-    DESC:
+    DESC: get_order_book() takes in two arguments, self and side where side takes on the value
+    of either "bids", or "asks" and returns a data frame of the current bids.
     """
-    
+
     def get_order_book(self, side):
         payload = {'ticker': self.ticker}
         with requests.Session() as sess:
@@ -26,13 +27,14 @@ class OrderBook:
                 print(global_orders)
                 global_orders_df = pd.json_normalize(global_orders[side])
         return global_orders_df
-    
+
     """
     PARAMETERS:
 
-    RETURNS: securities
+    RETURNS: my_orders
 
-    DESC:
+    DESC: get_my_orders() takes in two parameters, self and status where status takes on the values of "OPEN",
+    "TRANSACTED" or "CANCELLED" and returns a json string of all of the users OPEN, TRANSACTED or CANCELLED orders
     """
     def get_my_orders(self, status):
         payload = {'status': status}

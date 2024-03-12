@@ -5,10 +5,10 @@ from keys import api_key
 from endpoints import base_url, case_ep, assets_ep, securities_ep, his_ep, orders_ep, order_book_ep
 
 
-""" 
+"""
 PARAMETERS: None
 
-RETURNS: case 
+RETURNS: case
 
 DESCRIPTION:
 

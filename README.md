@@ -1,7 +1,9 @@
 # RIT_Trading_Env
 
 ## Overview
-Program Development for FIN 640 class.
+Program Development for FIN 640 class
+
+Documentation - [RIT Documentation](https://rit.306w.ca/RIT-REST-API/1.0.3/)
 
 ## Requirements
 * Python installation
