@@ -6,10 +6,16 @@ from endpoints import base_url, case_ep, assets_ep, securities_ep, his_ep, order
 
 
 """ 
-get_case() gets the current simulation Case name period number,
-tick_per_period, total periods, status and enforcement of trading limits
+PARAMETERS: None
 
-returns a a variable with a JSON string
+RETURNS: case 
+
+DESCRIPTION:
+
+get_case() gets the current simulation Case name period number,
+tick_per_period, total periods, status and enforcement of trading limits JSON object
+
+returns a variable called case that is a JSON string
 """
 def get_case():
     with requests.Session() as sess:
@@ -34,6 +40,9 @@ def get_assets(ticker):
 
 
 """
+PARAMETERS: ticker
+
+RETURNS:  
 get_securities()
 """
 def get_securities(ticker):
@@ -62,8 +71,6 @@ def get_securities_hist(ticker):
 
 """
 get_securities_book()
-
-
 """
 def get_securities_book(ticker, side):
     payload = {'ticker': ticker}
