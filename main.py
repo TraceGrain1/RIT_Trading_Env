@@ -12,15 +12,11 @@ from trading_functions import get_case, get_assets, get_securities, get_securiti
 
 def main():
     print("Starting Program...")
-    tradable_asset = Securities(ticker = "HAR", api_key = api_key)
     market_order_book = OrderBook(ticker = "HAR", api_key = api_key)
 
-    live = market_order_book.get_order_book(side = "asks")
-    print(live)
+    x = market_order_book.get_order_book_quantity(side = "bids", quantity=1000, equality_side=">", col_subset_list="price")
 
-    bid_ask = tradable_asset.get_trade_size_limits()
-    print(bid_ask)
-
+    print(x)
 if __name__ == "__main__":
     main()
 

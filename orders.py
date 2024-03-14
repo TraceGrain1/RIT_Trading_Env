@@ -1,12 +1,15 @@
 import requests
 import pandas as pd
+from securities import Securities
 from keys import api_key
 from endpoints import base_url, orders_ep, securities_ep, order_book_ep
 
-class OrderBook:
+"""
+TODO Write Docstring
+"""
+class OrderBook(Securities):
     def __init__(self, ticker, api_key):
-        self.ticker = ticker
-        self.api_key = api_key
+        super().__init__(ticker, api_key)
 
     """
     PARAMETERS:
@@ -24,9 +27,34 @@ class OrderBook:
             response = sess.get(base_url + securities_ep + order_book_ep, params = payload)
             if response.ok:
                 global_orders = response.json()
-                print(global_orders)
                 global_orders_df = pd.json_normalize(global_orders[side])
         return global_orders_df
+    
+    """
+    TODO Write Doc String
+    """
+    def get_order_book_type(self, side, order_type, col_subset_list):
+        orderbook_df = self.get_order_book(side = side)
+        key = orderbook_df["type"] == order_type
+        order_subset = orderbook_df[key.tolist()]
+        order_subset = orderbook_df[col_subset_list]
+        return order_subset
+    
+    """
+    TODO Write Doc String
+    """
+    def get_order_book_quantity(self, side, quantity, equality_side, col_subset_list):
+        orderbook_df = self.get_order_book(side = side)
+        if equality_side == ">":
+            key = orderbook_df["quantity"] >= quantity
+        elif equality_side == "=":
+            key = orderbook_df["quantity"] == quantity
+        else:
+            key = orderbook_df["quantity"] <= quantity
+        order_subset = orderbook_df[key.tolist()]
+        order_subset = order_subset[col_subset_list]
+        return order_subset
+
 
     """
     PARAMETERS:

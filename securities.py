@@ -3,6 +3,9 @@ import pandas as pd
 from keys import api_key
 from endpoints import base_url, securities_ep, his_ep
 
+"""
+TODO Write Docstring
+"""
 class Securities:
     def __init__(self, ticker, api_key):
         self.ticker = ticker
