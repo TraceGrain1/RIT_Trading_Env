@@ -19,9 +19,9 @@ class Trading(OrderBook):
         return case
 
     def calc_bid_ask_spread(self):
-        bids = self.get_order_book(side = "bids")
-        asks = self.get_order_book(side = "asks")
-        spread = asks["price"].iloc[0] - bids["price"].iloc[0]
+        bids = self.get_bid_ask()
+        asks = self.get_bid_ask()
+        spread = asks[1] - bids[0]
         return spread
     
     def calc_spread_percent(self):
@@ -29,6 +29,22 @@ class Trading(OrderBook):
         ask_price = self.get_last_price()
         spread_percent = (spread / ask_price) * 100
         return spread_percent
+    
+    def calculate_bullish(self):
+        ohlc = self.get_ohlc()
+        open_price = ohlc["open"][0]
+        close_price = ohlc["close"][0]
+        bullish = close_price > open_price
+        return bullish
+    
+    def calculate_bearish(self):
+        ohlc = self.get_ohlc()
+        open_price = ohlc["open"]
+        close_price = ohlc["close"]
+        bearish = close_price < open_price
+        return bearish
+    
+    
 
 
 """
@@ -124,18 +140,3 @@ def get_orders(order_type):
         if response.ok:
             orders = response.json()
     return orders
-
-
-"""
-post_order()
-"""
-def post_order(ticker, order_type, quantity, side, price):
-    payload = {'ticker': ticker, 'type': order_type, 'quantity': quantity, 'action': side, 'price': price}
-    with requests.Session() as sess:
-        sess.headers.update(api_key)
-        response = sess.post(base_url + orders_ep, params = payload)
-        print(response)
-        if response.ok:
-            order_post_details = response.json()
-            print(order_post_details)
-    return order_post_details

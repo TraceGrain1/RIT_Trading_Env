@@ -28,6 +28,16 @@ class Securities:
             if response.ok:
                 securities = response.json()
         return securities
+    
+    def get_ohlc(self):
+        payload = {'ticker': self.ticker}
+        with requests.Session() as sess:
+            sess.headers.update(self.api_key)
+            response = sess.get(base_url + securities_ep + his_ep, params = payload)
+            if response.ok:
+                ohlc = response.json()
+                ohlc_df = pd.json_normalize(ohlc)
+        return ohlc_df
 
     """
     PARAMETERS:
@@ -56,6 +66,8 @@ class Securities:
         securities_json = self.get_securities_detail()
         security_ask = securities_json[0]["ask"]
         return security_ask
+    
+    
 
     """
     PARAMETERS:
@@ -86,7 +98,6 @@ class Securities:
         security_bid = securities_json[0]["bid"]
         security_ask = securities_json[0]["ask"]
         bid_ask = [security_bid, security_ask]
-        print("Bid, Ask")
         return bid_ask
 
 

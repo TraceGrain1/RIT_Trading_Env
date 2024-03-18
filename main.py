@@ -9,7 +9,6 @@ from orders import OrderBook
 from trading import Trading
 from keys import api_key
 from endpoints import base_url, case_ep, trader_ep, limits_ep, news_ep, assets_ep, securities_ep, tenders_ep, leases_ep, his_ep, order_book_ep, tas_ep, orders_ep, id_ep, bulk_cancel_ep
-from trading import post_order
 
 
 def main():
@@ -29,13 +28,20 @@ def main():
         spread_percent = round(trader.calc_spread_percent(), 2)
         position = trader.get_position()
         nlv = trader.get_nlv()
+        price = trader.get_last_price()
         bid = trader.get_bid()
         ask = trader.get_ask()
+        ohlc = trader.get_ohlc()
+        bull = trader.calculate_bullish()
         my_o_orders = trader.get_my_orders("OPEN")
         my_t_orders = trader.get_my_orders("TRANSACTED")
         my_c_orders = trader.get_my_orders("CLOSED")
 
+        print(ohlc)
+
         print("------------------------------------------------------------------------------------")
+        print(f"Bullish: {bull}")
+        print(f"Price: {price}")
         print(f"Bid: {bid}\tAsk: {ask}")
         print(f"Spread: {spread}\tSpread Percent: {spread_percent} %\tPosition: {position} shares")
         print(f"Net Liquidation Value: {nlv}")
