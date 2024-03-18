@@ -41,7 +41,15 @@ class OrderBook(Securities):
         return order_subset
     
     """
-    TODO Write Doc String
+    PARAMETERS:
+
+    RETURNS: order_subset
+
+    DESC: get_order_book_quantity() takes in five parameters, self, side, quantity, equality_side and col_subset_list
+    where side takes on the value of either "bids", or "asks", quantity is the amount of shares that we are looking for,
+    equality_side takes on the values of ">", "=", or "<" and col_subset_list is a list of columns that we want to return
+    in the data frame. The function returns a data frame of the current bids or asks that meet the criteria of the equality
+    side and the quantity of shares that we are looking for.
     """
     def get_order_book_quantity(self, side, quantity, equality_side, col_subset_list):
         orderbook_df = self.get_order_book(side = side)
@@ -72,3 +80,17 @@ class OrderBook(Securities):
             if response.ok:
                 my_orders = response.json()
         return my_orders
+
+    """
+    PARAMETERS: order_type, quantity, price
+
+    RETURNS: response
+    """
+    def post_order(self, order_type, quantity, price):
+        payload = {'ticker': self.ticker, 'type': order_type, 'quantity': quantity, 'price': price}
+        with requests.Session() as sess:
+            sess.headers.update(self.api_key)
+            response = sess.post(base_url + orders_ep, params = payload)
+            if response.ok:
+                response = response.json()
+        return response

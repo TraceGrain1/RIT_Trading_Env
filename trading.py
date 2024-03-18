@@ -1,8 +1,34 @@
 ## This file houses all the trading
 import requests
 import pandas as pd
+from orders import OrderBook
 from keys import api_key
 from endpoints import base_url, case_ep, assets_ep, securities_ep, his_ep, orders_ep, order_book_ep
+
+
+class Trading(OrderBook):
+    def __init__(self, ticker, api_key):
+        super().__init__(ticker, api_key)
+
+    def get_case(self):
+        with requests.Session() as sess:
+            sess.headers.update(self.api_key)
+            response = sess.get(base_url + case_ep)
+            if response.ok:
+                case = response.json()
+        return case
+
+    def calc_bid_ask_spread(self):
+        bids = self.get_order_book(side = "bids")
+        asks = self.get_order_book(side = "asks")
+        spread = asks["price"].iloc[0] - bids["price"].iloc[0]
+        return spread
+    
+    def calc_spread_percent(self):
+        spread = self.calc_bid_ask_spread()
+        ask_price = self.get_last_price()
+        spread_percent = (spread / ask_price) * 100
+        return spread_percent
 
 
 """
