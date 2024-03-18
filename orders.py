@@ -79,6 +79,8 @@ class OrderBook(Securities):
             response = sess.get(base_url + orders_ep, params = payload)
             if response.ok:
                 my_orders = response.json()
+            else:
+                my_orders = "No orders found"
         return my_orders
 
     """

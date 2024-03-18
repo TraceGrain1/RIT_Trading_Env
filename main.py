@@ -25,27 +25,49 @@ def main():
         exit()
 
     while game == True:
-        time.sleep(0.5)
         spread = round(trader.calc_bid_ask_spread(), 2)
         spread_percent = round(trader.calc_spread_percent(), 2)
         position = trader.get_position()
         nlv = trader.get_nlv()
         bid = trader.get_bid()
         ask = trader.get_ask()
+        my_o_orders = trader.get_my_orders("OPEN")
+        my_t_orders = trader.get_my_orders("TRANSACTED")
+        my_c_orders = trader.get_my_orders("CLOSED")
 
         print("------------------------------------------------------------------------------------")
-        print(f"Bid: {bid}\tAsk: {ask}\n")
-        print(f"Spread: {spread}\tSpread Percent: {spread_percent} %\tPosition: {position} shares\n")
-        print(f"Net Liquidation Value: {nlv}\n")
+        print(f"Bid: {bid}\tAsk: {ask}")
+        print(f"Spread: {spread}\tSpread Percent: {spread_percent} %\tPosition: {position} shares")
+        print(f"Net Liquidation Value: {nlv}")
         print("------------------------------------------------------------------------------------")
-
-        input_order = input("Do you want to place an order? (y/n)")
+        print("My Open Orders:")
+        print(my_o_orders)
         print("\n")
-        if input_order == "y":
+        print("My Transactions:")
+        print(my_t_orders)
+        print("\n")
+        print("My Closed Orders:")
+        print(my_c_orders)
+        print("------------------------------------------------------------------------------------")
+
+        input_order = input("Do you want to place an order? (1/0)")
+        print("\n")
+        if input_order == "1":
             print("Placing order...")
-            quantity = input("Enter quantity: ")
-            quantity = int(quantity)
-            price = input("Enter Price: ")
+            while True:
+                try:
+                    quantity = input("Enter quantity: ")
+                    quantity = float(quantity)
+                    break
+                except ValueError:
+                    print("Invalid input...")
+            while True:
+                try:
+                    price = input("Enter Price: ")
+                    price = float(quantity)
+                    break
+                except ValueError:
+                    print("Invalid input...")
             order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "BUY", price = price)
             print(order)
         else:
