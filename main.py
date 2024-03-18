@@ -31,10 +31,25 @@ def main():
         price = trader.get_last_price()
         bid = trader.get_bid()
         ask = trader.get_ask()
-        bull_5 = trader.bull_bear_tick_distribution(5)
-        bull_10 = trader.bull_bear_tick_distribution(10)
-        bull_15 = trader.bull_bear_tick_distribution(15)
-        bull_30 = trader.bull_bear_tick_distribution(30)
+        market = trader.get_ohlc()
+        tick = market["tick"][0]
+
+        if tick >= 5:
+            bull_5 = trader.bull_bear_tick_distribution(5)
+        else:
+            bull_5 = "N/A"
+        if tick >= 10:
+            bull_10 = trader.bull_bear_tick_distribution(10)
+        else:
+            bull_10 = "N/A"
+        if tick >= 15:
+            bull_15 = trader.bull_bear_tick_distribution(15)
+        else:
+            bull_15 = "N/A"
+        if tick >= 30:
+            bull_30 = trader.bull_bear_tick_distribution(30)
+        else:
+            bull_30 = "N/A"
         bull = trader.calculate_bullish()
         my_o_orders = trader.get_my_orders("OPEN")
         my_t_orders = trader.get_my_orders("TRANSACTED")
