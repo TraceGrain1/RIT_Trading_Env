@@ -1,1 +1,1 @@
-api_key = {'X-API-key': 'AKO5M1FK'}
+api_key = {'X-API-key': 'XADWOJE3'}
