@@ -47,6 +47,15 @@ class Securities:
         security_nlv = securities_json[0]["nlv"]
         return security_nlv
     
+    def get_bid(self):
+        securities_json = self.get_securities_detail()
+        security_bid = securities_json[0]["bid"]
+        return security_bid
+    
+    def get_ask(self):
+        securities_json = self.get_securities_detail()
+        security_ask = securities_json[0]["ask"]
+        return security_ask
 
     """
     PARAMETERS:
