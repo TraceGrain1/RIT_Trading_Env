@@ -42,10 +42,8 @@ def main():
         print("------------------------------------------------------------------------------------")
         print("My Open Orders:")
         print(my_o_orders)
-        print("\n")
         print("My Transactions:")
         print(my_t_orders)
-        print("\n")
         print("My Closed Orders:")
         print(my_c_orders)
         print("------------------------------------------------------------------------------------")
@@ -54,21 +52,89 @@ def main():
         print("\n")
         if input_order == "1":
             print("Placing order...")
-            while True:
-                try:
-                    quantity = input("Enter quantity: ")
-                    quantity = float(quantity)
-                    break
-                except ValueError:
-                    print("Invalid input...")
-            while True:
-                try:
-                    price = input("Enter Price: ")
-                    price = float(quantity)
-                    break
-                except ValueError:
-                    print("Invalid input...")
-            order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "BUY", price = price)
+            side = input("Choose side: (1) Buy (2) Sell")
+            if side == "1":
+                while True:
+                    try:
+                        print("Quantity Hot Keys: (1): 100, (2): 200, (3): 300, (4): 400, (5): 500, (6): Custom Quantity")
+                        hot_key = input("Enter Hot Key: ")
+                        if hot_key == "1":
+                            quantity = 100
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "2":
+                            quantity = 200
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "3":
+                            quantity = 300
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "4":
+                            quantity = 400
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "5":
+                            quantity = 500
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "6":
+                            quantity = input("Enter quantity: ")
+                            quantity = float(quantity)
+                            break
+                        else:
+                            break
+                    except ValueError:
+                        print("Invalid input...")
+                while True:
+                    try:
+                        price = input("Enter Price: ")
+                        price = float(price)
+                        break
+                    except ValueError:
+                        print("Invalid input...")
+                order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "BUY", price = price)
+            else:
+                while True:
+                    try:
+                        print("Quantity Hot Keys: (1): 100, (2): 200, (3): 300, (4): 400, (5): 500, (6): Custom Quantity")
+                        hot_key = input("Enter Hot Key: ")
+                        if hot_key == "1":
+                            quantity = 100
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "2":
+                            quantity = 200
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "3":
+                            quantity = 300
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "4":
+                            quantity = 400
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "5":
+                            quantity = 500
+                            quantity = float(quantity)
+                            break
+                        elif hot_key == "6":
+                            quantity = input("Enter quantity: ")
+                            quantity = float(quantity)
+                            break
+                        else:
+                            break
+                    except ValueError:
+                        print("Invalid input...")
+                while True:
+                    try:
+                        price = input("Enter Price: ")
+                        price = float(price)
+                        break
+                    except ValueError:
+                        print("Invalid input...")
+                order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "SELL", price = price)
             print(order)
         else:
             print("No order placed...")
