@@ -37,14 +37,15 @@ class Trading(OrderBook):
         bullish = close_price > open_price
         return bullish
     
-    def calculate_bearish(self):
+    def bull_bear_tick_distribution(self, ticks):
         ohlc = self.get_ohlc()
-        open_price = ohlc["open"]
-        close_price = ohlc["close"]
-        bearish = close_price < open_price
-        return bearish
-    
-    
+        if len(ohlc) > ticks:
+            ohlc_sub = ohlc.head(ticks)
+            open_price = ohlc_sub["open"]
+            close_price = ohlc_sub["close"]
+            distribution = close_price > open_price
+            sum_distribution = distribution.sum()
+        return sum_distribution
 
 
 """
