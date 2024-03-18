@@ -86,8 +86,8 @@ class OrderBook(Securities):
 
     RETURNS: response
     """
-    def post_order(self, order_type, quantity, price):
-        payload = {'ticker': self.ticker, 'type': order_type, 'quantity': quantity, 'price': price}
+    def post_order(self, order_type, quantity, action, price):
+        payload = {'ticker': self.ticker, 'type': order_type, 'quantity': quantity, 'action': action, 'price': price }
         with requests.Session() as sess:
             sess.headers.update(self.api_key)
             response = sess.post(base_url + orders_ep, params = payload)

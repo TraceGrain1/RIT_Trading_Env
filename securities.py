@@ -42,6 +42,11 @@ class Securities:
         security_position = securities_json[0]["position"]
         return security_position
     
+    def get_nlv(self):
+        securities_json = self.get_securities_detail()
+        security_nlv = securities_json[0]["nlv"]
+        return security_nlv
+    
 
     """
     PARAMETERS:

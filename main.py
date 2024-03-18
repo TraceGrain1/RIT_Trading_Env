@@ -24,18 +24,22 @@ def main():
         print("Exiting program...")
         exit()
 
-    print("Getting case information...")
     while game == True:
         time.sleep(0.5)
-        spread = trader.calc_bid_ask_spread()
-        spread_percent = trader.calc_spread_percent()
+        spread = round(trader.calc_bid_ask_spread(), 2)
+        spread_percent = round(trader.calc_spread_percent(), 2)
+        position = trader.get_position()
+        nlv = trader.get_nlv()
+
         # Print the spread and spread percent in a formatted string table separated by tabs
-        print(f"Spread: {spread}\tSpread Percent: {spread_percent}")
+        print(f"Spread: {spread}\tSpread Percent: {spread_percent} %\tPosition: {position} shares\n")
+        print(f"Net Liquidation Value: {nlv}\n")
 
         input_order = input("Do you want to place an order? (y/n)")
+        print("\n")
         if input_order == "y":
             print("Placing order...")
-            order = post_order(ticker = "HAR", quantity = 100, price = 100, side = "buy", order_type = "limit", api_key = api_key)
+            order = trader.post_order(order_type = "LIMIT", quantity = 100, action = "BUY", price = 10.00)
             print(order)
         else:
             print("No order placed...")
