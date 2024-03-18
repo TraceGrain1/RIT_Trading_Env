@@ -9,7 +9,7 @@ from orders import OrderBook
 from trading import Trading
 from keys import api_key
 from endpoints import base_url, case_ep, trader_ep, limits_ep, news_ep, assets_ep, securities_ep, tenders_ep, leases_ep, his_ep, order_book_ep, tas_ep, orders_ep, id_ep, bulk_cancel_ep
-from trading import get_case, get_assets, get_securities, get_securities_hist, get_orders, get_securities_book, post_order
+from trading import post_order
 
 
 def main():
@@ -40,8 +40,6 @@ def main():
         else:
             print("No order placed...")
 
-
-        #x = market_order_book.get_order_book_quantity(side = "bids", quantity=1000, equality_side=">", col_subset_list="price")
 
 if __name__ == "__main__":
     main()
