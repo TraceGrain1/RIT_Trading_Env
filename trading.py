@@ -44,8 +44,12 @@ class Trading(OrderBook):
             open_price = ohlc_sub["open"]
             close_price = ohlc_sub["close"]
             distribution = close_price > open_price
-            sum_distribution = distribution.sum()
-        return sum_distribution
+            while True:
+                try:
+                    sum_distribution = distribution.sum()
+                    return sum_distribution
+                except:
+                    continue
 
 
 """

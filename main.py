@@ -4,6 +4,8 @@
 import requests
 import pandas
 import time
+import numpy as np
+import asciichartpy as acp
 from securities import Securities
 from orders import OrderBook
 from trading import Trading
@@ -28,39 +30,96 @@ def main():
         spread_percent = round(trader.calc_spread_percent(), 2)
         position = trader.get_position()
         nlv = trader.get_nlv()
-        price = trader.get_last_price()
+        current_price = trader.get_last_price()
         bid = trader.get_bid()
         ask = trader.get_ask()
         market = trader.get_ohlc()
         tick = market["tick"][0]
 
+        if tick >= 1:
+            bull_1 = trader.bull_bear_tick_distribution(1)
+        else:
+            bull_1 = 0
+
+        if tick >= 3:
+            bull_3 = trader.bull_bear_tick_distribution(3)
+        else:
+            bull_3 = 0
+
         if tick >= 5:
             bull_5 = trader.bull_bear_tick_distribution(5)
         else:
-            bull_5 = "N/A"
+            bull_5 = 0
+
+        if tick >= 7:
+            bull_7 = trader.bull_bear_tick_distribution(7)
+        else:
+            bull_7 = 0
+
         if tick >= 10:
             bull_10 = trader.bull_bear_tick_distribution(10)
         else:
-            bull_10 = "N/A"
+            bull_10 = 0
+
         if tick >= 15:
             bull_15 = trader.bull_bear_tick_distribution(15)
         else:
-            bull_15 = "N/A"
+            bull_15 = 0
+
+        if tick >= 20:
+            bull_20 = trader.bull_bear_tick_distribution(20)
+        else:
+            bull_20 = 0
+
+        if tick >= 25:
+            bull_25 = trader.bull_bear_tick_distribution(25)
+        else:
+            bull_25 = 0
+        
         if tick >= 30:
             bull_30 = trader.bull_bear_tick_distribution(30)
         else:
-            bull_30 = "N/A"
-        bull = trader.calculate_bullish()
+            bull_30 = 0
+
+        if tick >= 40:
+            bull_40 = trader.bull_bear_tick_distribution(40)
+        else:
+            bull_40 = 0
+        
+        if tick >= 50:
+            bull_50 = trader.bull_bear_tick_distribution(50)
+        else:
+            bull_50 = 0
+
         my_o_orders = trader.get_my_orders("OPEN")
         my_t_orders = trader.get_my_orders("TRANSACTED")
         my_c_orders = trader.get_my_orders("CLOSED")
 
+        bull_envelope = [0, bull_1, bull_3, bull_5, bull_7, bull_10, bull_15, bull_20, bull_25, bull_30, bull_40, bull_50, 15]
+
+        if tick >= 70:
+            price_series = pandas.Series(market["close"]).head(70)
+            #price_series = price_series.tolist().reverse()
+        else:
+            price_series = pandas.Series(market["close"])
+            #price_series = price_series.tolist().reverse()
+
+        print("------------------------------------------------------------------------------------")
+        print("Market Data: ")
+        print(f"Tick: {tick} out of 300")
+        price_plot = acp.plot(price_series, {'height': 5, 'offset': 5})
+        print(price_plot)
+        print("------------------------------------------------------------------------------------")
+        print("Bullish Envelope: ")
+        bull_env_plot = acp.plot(bull_envelope, {'height': 5, 'offset': 5})
+        print(bull_env_plot)
         print("------------------------------------------------------------------------------------")
         print("Momentum Indicators: ")
-        print(f"Bull 5: {bull_5}\tBull 10: {bull_10}\tBull 15: {bull_15}\tBull 30: {bull_30}")
+        print(f"Bull 1: {bull_1}\tBull 3: {bull_3}\tBull 5: {bull_5}\tBull 7: {bull_7}\tBull 10: {bull_10}")
+        print(f"Bull 15: {bull_15}\tBull 20: {bull_20}\tBull 25: {bull_25}\tBull 30: {bull_30}\tBull 40: {bull_40}")
+        print(f"Bull 50: {bull_50}")
         print("------------------------------------------------------------------------------------")
-        print(f"Bullish: {bull}")
-        print(f"Price: {price}")
+        print(f"Price: {current_price}")
         print(f"Bid: {bid}\tAsk: {ask}")
         print(f"Spread: {spread}\tSpread Percent: {spread_percent} %\tPosition: {position} shares")
         print(f"Net Liquidation Value: {nlv}")
@@ -81,26 +140,26 @@ def main():
             if side == "1":
                 while True:
                     try:
-                        print("Quantity Hot Keys: (1): 100, (2): 200, (3): 300, (4): 400, (5): 500, (6): Custom Quantity")
+                        print("Quantity Hot Keys: (1): 500, (2): 1000, (3): 1500, (4): 2000, (5): 2500, (6): Custom Quantity")
                         hot_key = input("Enter Hot Key: ")
                         if hot_key == "1":
-                            quantity = 100
+                            quantity = 500
                             quantity = float(quantity)
                             break
                         elif hot_key == "2":
-                            quantity = 200
+                            quantity = 1000
                             quantity = float(quantity)
                             break
                         elif hot_key == "3":
-                            quantity = 300
+                            quantity = 1500
                             quantity = float(quantity)
                             break
                         elif hot_key == "4":
-                            quantity = 400
+                            quantity = 2000
                             quantity = float(quantity)
                             break
                         elif hot_key == "5":
-                            quantity = 500
+                            quantity = 2500
                             quantity = float(quantity)
                             break
                         elif hot_key == "6":
@@ -113,35 +172,46 @@ def main():
                         print("Invalid input...")
                 while True:
                     try:
+                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price")
                         price = input("Enter Price: ")
-                        price = float(price)
-                        break
+                        if price == "1":
+                            price = float(current_price)
+                            break
+                        elif price == "2":
+                            price = float(bid)
+                            break
+                        elif price == "3":
+                            price = float(ask)
+                            break
+                        else:
+                            price = float(input("Enter Custom Price: "))
+                            break
                     except ValueError:
                         print("Invalid input...")
                 order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "BUY", price = price)
             else:
                 while True:
                     try:
-                        print("Quantity Hot Keys: (1): 100, (2): 200, (3): 300, (4): 400, (5): 500, (6): Custom Quantity")
+                        print("Quantity Hot Keys: (1): 500, (2): 1000, (3): 1500, (4): 2000, (5): 2500, (6): Custom Quantity")
                         hot_key = input("Enter Hot Key: ")
                         if hot_key == "1":
-                            quantity = 100
+                            quantity = 500
                             quantity = float(quantity)
                             break
                         elif hot_key == "2":
-                            quantity = 200
+                            quantity = 1000
                             quantity = float(quantity)
                             break
                         elif hot_key == "3":
-                            quantity = 300
+                            quantity = 1500
                             quantity = float(quantity)
                             break
                         elif hot_key == "4":
-                            quantity = 400
+                            quantity = 2000
                             quantity = float(quantity)
                             break
                         elif hot_key == "5":
-                            quantity = 500
+                            quantity = 2500
                             quantity = float(quantity)
                             break
                         elif hot_key == "6":
@@ -154,15 +224,27 @@ def main():
                         print("Invalid input...")
                 while True:
                     try:
+                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price")
                         price = input("Enter Price: ")
-                        price = float(price)
-                        break
+                        if price == "1":
+                            price = float(current_price)
+                            break
+                        elif price == "2":
+                            price = float(bid)
+                            break
+                        elif price == "3":
+                            price = float(ask)
+                            break
+                        else:
+                            price = float(input("Enter Custom Price: "))
+                            break
                     except ValueError:
                         print("Invalid input...")
                 order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "SELL", price = price)
             print(order)
         else:
             print("No order placed...")
+            print("\n")
 
 
 if __name__ == "__main__":
