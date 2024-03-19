@@ -93,7 +93,6 @@ def main():
 
         my_o_orders = trader.get_my_orders("OPEN")
         my_t_orders = trader.get_my_orders("TRANSACTED")
-        my_c_orders = trader.get_my_orders("CLOSED")
 
         bull_envelope = [0, bull_1, bull_3, bull_5, bull_7, bull_10, bull_15, bull_20, bull_25, bull_30, bull_40, bull_50, 15]
 
@@ -116,8 +115,6 @@ def main():
         print("------------------------------------------------------------------------------------")
         print("Momentum Indicators: ")
         print(f"Bull 1: {bull_1}\tBull 3: {bull_3}\tBull 5: {bull_5}\tBull 7: {bull_7}\tBull 10: {bull_10}")
-        print(f"Bull 15: {bull_15}\tBull 20: {bull_20}\tBull 25: {bull_25}\tBull 30: {bull_30}\tBull 40: {bull_40}")
-        print(f"Bull 50: {bull_50}")
         print("------------------------------------------------------------------------------------")
         print(f"Price: {current_price}")
         print(f"Bid: {bid}\tAsk: {ask}")
@@ -128,8 +125,6 @@ def main():
         print(my_o_orders)
         print("My Transactions:")
         print(my_t_orders)
-        print("My Closed Orders:")
-        print(my_c_orders)
         print("------------------------------------------------------------------------------------")
 
         input_order = input("Do you want to place an order? (1/0)")
@@ -172,23 +167,31 @@ def main():
                         print("Invalid input...")
                 while True:
                     try:
-                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price")
+                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price, (5): Market Order")
                         price = input("Enter Price: ")
                         if price == "1":
+                            order_type = "LIMIT"
                             price = float(current_price)
                             break
                         elif price == "2":
+                            order_type = "LIMIT"
                             price = float(bid)
                             break
                         elif price == "3":
+                            order_type = "LIMIT"
                             price = float(ask)
                             break
-                        else:
+                        elif price == "4":
+                            order_type = "LIMIT"
                             price = float(input("Enter Custom Price: "))
+                            break
+                        elif price == "5":
+                            order_type = "MARKET"
+                            price = None
                             break
                     except ValueError:
                         print("Invalid input...")
-                order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "BUY", price = price)
+                order = trader.post_order(order_type = order_type, quantity = quantity, action = "BUY", price = price)
             else:
                 while True:
                     try:
@@ -224,23 +227,30 @@ def main():
                         print("Invalid input...")
                 while True:
                     try:
-                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price")
+                        print("Price Hot Keys: (1): Current Price, (2): Bid, (3): Ask, (4): Custom Price (5): Market Order")
                         price = input("Enter Price: ")
                         if price == "1":
+                            order_type = "LIMIT"
                             price = float(current_price)
                             break
                         elif price == "2":
+                            order_type = "LIMIT"
                             price = float(bid)
                             break
                         elif price == "3":
+                            order_type = "LIMIT"
                             price = float(ask)
                             break
-                        else:
-                            price = float(input("Enter Custom Price: "))
+                        elif price == "4":
+                            price = price = float(input("Enter Custom Price: "))
+                            break
+                        elif price == "5":
+                            order_type = "MARKET"
+                            price = 0
                             break
                     except ValueError:
                         print("Invalid input...")
-                order = trader.post_order(order_type = "LIMIT", quantity = quantity, action = "SELL", price = price)
+                order = trader.post_order(order_type = order_type, quantity = quantity, action = "SELL", price = price)
             print(order)
         else:
             print("No order placed...")
